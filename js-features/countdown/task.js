@@ -1,13 +1,13 @@
 // Задача 1
 
-// let timerCount = document.getElementById('timer').innerHTML;
-// let timer = setInterval(() => {
-//     if (--timerCount === 0) {
-//         alert('Вы победили в конкурсе!');
-//         clearInterval(timer);
-//     }
-//     document.getElementById('timer').innerHTML = timerCount;
-// }, 1000);
+let timerCount = document.getElementById('timer').innerHTML;
+let timer = setInterval(() => {
+    if (--timerCount === 0) {
+        alert('Вы победили в конкурсе!');
+        clearInterval(timer);
+    }
+    document.getElementById('timer').innerHTML = timerCount;
+}, 1000);
 
 // Задача 2
 
