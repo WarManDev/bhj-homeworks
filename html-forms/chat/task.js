@@ -1,74 +1,95 @@
 const chat = document.querySelector('.chat-widget');
-const input = document.getElementById('chat-widget__input');
-const chatWidget = document.querySelector('.chat-widget__messages')
-let time = settingTheTime();
+const chatMessage = document.querySelector('#chat-widget__messages');
+const chatInput = document.querySelector('#chat-widget__input');
+let message;
+let intervalIndex;
 
 chat.addEventListener('click', () => {
+  if (!Array.from(chat).includes('chat-widget_active')) {
     chat.classList.add('chat-widget_active');
-    
+  }
 });
 
-// input.addEventListener('focus', () => {
-//     console.log(input.focus);
-// });
-
-input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        let messageClient = input.value;
-        chatWidget.innerHTML += sendMessages(messageClient.trim(), 'message_client');
-        chatWidget.innerHTML += sendMessages(messageBotFunc());
-        input.value = '';
-        chatWidget.scrollIntoView(false);
-    }
-    
+chatInput.addEventListener('focus', () => {
+  intervalIndex = intervalFunc();
 });
 
-function messageBotFunc() {
-    const messageArray = [
-        'Как дела?',
-        'Я  вас не слышу!',
-        'Вы очень тихо говорите))',
-        'Мы постораемся помочь',
-        'Вы говорите по-русски?',
-        'Перезвоните позже',
-        'Если честно, устал от вас',
-        'Меня зовут Петя',
-        'Сколько вам лет?',
-        'УРААА!!!',
-        'хм...',
-        'Удачи!',
-    ];
+chatInput.addEventListener('blur', () => {
+  clearInterval(intervalIndex);
+  console.log(2);
+});
+
+chatInput.addEventListener('change', () => {
+  console.log(1);
+});
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.currentTarget.value.trim() === '') {
+    clearInterval(intervalIndex);
+    e.currentTarget.value = e.currentTarget.defaultValue;
+    intervalIndex = intervalFunc();
+  } else if (e.key === 'Enter') {
+    clearInterval(intervalIndex);
+    addMassegies(e.currentTarget.value.trim(), 'message_client');
+    addMassegies(messageBot());
+    scroll();
+    e.currentTarget.value = e.currentTarget.defaultValue;
+    intervalIndex = intervalFunc();
+  }
+});
+
+function intervalFunc() {
+  let elemInterval = setInterval(() => {
+    addMassegies('Общаться будем');
+    scroll();
+  }, 30000);
+  return elemInterval;
+}
+function addMassegies(messageText, classTagUser = null) {
+  let time = settingTheTime();
+  chatMessage.innerHTML += `<div class="message ${classTagUser}">
+      <div class="message__time">${time}</div>
+      <div class="message__text">
+        ${messageText}
+      </div>
+    </div>`;
+}
+
+function scroll() {
+  message = document.querySelectorAll('.message');
+  message[message.length - 1].scrollIntoView(false);
+}
+
+function messageBot() {
+  const messageArray = [
+      'bob',
+      'awesome',
+      'я люблю netology',
+      'hello',
+      'kitty',
+      'rock',
+      'youtube',
+      'я люблю popcorn',
+      'cinema',
+      'love',
+      'я люблю javascript',
+      'я люблю kitkat',
+    ],
     index = Math.floor(Math.random() * messageArray.length);
-    return messageArray[index];
 
+  return messageArray[index];
 }
 
 function settingTheTime() {
-    let currentDate = new Date();
-    hours =
-      currentDate.getHours() < 10
-        ? `0${currentDate.getHours()}`
-        : `${currentDate.getHours()}`;
-    minutes =
-      currentDate.getMinutes() < 10
-        ? `0${currentDate.getMinutes()}`
-        : `${currentDate.getMinutes()}`;
-  
-    return `${hours}:${minutes}`;
-  }
+  let currentDate = new Date();
+  hours =
+    currentDate.getHours() < 10
+      ? `0${currentDate.getHours()}`
+      : `${currentDate.getHours()}`;
+  minuts =
+    currentDate.getMinutes() < 10
+      ? `0${currentDate.getMinutes()}`
+      : `${currentDate.getMinutes()}`;
 
-function sendMessages(textMessage, userMessage = null) {
-    let messageBlock = `<div class="message ${userMessage}">
-        <div class="message__time">${time}</div>
-        <div class="message__text">${textMessage}</div>
-        </div>`;
-    return messageBlock;
-}
-
-function intervalFunc() {
-    let elemInterval = setInterval(() => {
-        sendMessages('Ау, вы еще здесь?');
-        chatWidget.scrollIntoView(false);
-    }, 3000);
-    return elemInterval;
+  return `${hours}:${minuts}`;
 }
