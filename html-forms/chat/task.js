@@ -93,3 +93,4 @@ function settingTheTime() {
 
   return `${hours}:${minuts}`;
 }
+console.log(settingTheTime());
